@@ -5,3 +5,4 @@ Flask-Login
 psycopg2-binary
 python-dotenv
 pyjwt
+sympy
