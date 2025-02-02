@@ -67,15 +67,16 @@ class Users(db.Model, UserMixin):
 class Savings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    balance_encrypted = db.Column(db.String, nullable=False)  # Simpan saldo dalam bentuk terenkripsi
+    balance_encrypted = db.Column(db.String, nullable=False)
 
     user = db.relationship('Users', backref=db.backref('savings', lazy=True))
 
 class Transactions(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
-    types = db.Column(db.String, nullable=False)  # Simpan saldo dalam bentuk terenkripsi
-    amount_enc = db.Column(db.String, nullable=False)  # Simpan saldo dalam bentuk terenkripsi
+    types = db.Column(db.String, nullable=False)
+    description = db.Column(db.String, nullable=False)
+    amount_enc = db.Column(db.String, nullable=False)
 
     user = db.relationship('Users', backref=db.backref('transactions', lazy=True))
 
@@ -276,6 +277,7 @@ def add(m1, m2, public_key, private_key):
 def topup(current_user):
     data = request.get_json()
     amount = int(data['amount'])
+    description = data['description']
     
     user_savings = Savings.query.filter_by(user_id=current_user.id).first()
 
@@ -297,7 +299,8 @@ def topup(current_user):
     new_transaction = Transactions(
         user_id=current_user.id,
         types='topup',  # Tipe transaksi
-        amount_enc=amount_enc
+        amount_enc=amount_enc,
+        description=description
     )
     
     db.session.add(new_transaction)
@@ -314,6 +317,7 @@ def topup(current_user):
 def withdraw(current_user):
     data = request.get_json()
     amount = int(data['amount'])
+    description = data['description']
     
     user_savings = Savings.query.filter_by(user_id=current_user.id).first()
 
@@ -339,7 +343,8 @@ def withdraw(current_user):
     new_transaction = Transactions(
         user_id=current_user.id,
         types='withdraw',  # Tipe transaksi
-        amount_enc=amount_enc
+        amount_enc=amount_enc, 
+        description=description
     )
     
     db.session.add(new_transaction)
