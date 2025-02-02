@@ -1,1 +1,7 @@
-Flask==3.0.3
+Flask
+Flask-SQLAlchemy
+Flask-Bcrypt
+Flask-Login
+psycopg2-binary
+python-dotenv
+pyjwt
