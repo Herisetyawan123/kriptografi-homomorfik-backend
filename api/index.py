@@ -42,7 +42,9 @@ def decrypt(c, private_key):
     m = (L * μ) % n
     return m
 
-public_key, private_key = generate_keys()
+# public_key, private_key = generate_keys()
+public_key, private_key = (127723, 127724), (3024, 19471, 127723)
+
 # Load environment variables from .env
 load_dotenv()
 
@@ -128,6 +130,10 @@ def load_user(user_id):
 @app.route('/')
 def index():
     return jsonify({'message': "selamat datang di api"}), 200
+
+@app.route('/key')
+def key():
+    return jsonify({'message': "selamat datang di api", "key": [public_key, private_key]}), 200
 
 # Get All Users Endpoint
 @app.route('/api/users', methods=['GET'])
