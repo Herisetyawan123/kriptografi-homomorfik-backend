@@ -9,6 +9,7 @@ from functools import wraps
 import os
 import random
 import sympy
+from flask_cors import CORS
 
 
 
@@ -49,6 +50,7 @@ env_db_uri = os.getenv('DATABASE_URL', 'postgresql://username:password@host:port
 env_secret_key = os.getenv('SECRET_KEY', 'supersecretkey')
 
 app = Flask(__name__)
+CORS(app) 
 app.config['SQLALCHEMY_DATABASE_URI'] = env_db_uri  # Menggunakan variabel environment
 app.config['SECRET_KEY'] = env_secret_key
 db = SQLAlchemy(app)
